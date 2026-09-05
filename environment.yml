@@ -1,0 +1,20 @@
+name: causal-consistency-nla
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - pyyaml
+  - pip:
+      - torch
+      - transformers==4.57.6   # pinned: 5.x conflicts with huggingface_hub>=1.0
+      - accelerate
+      - safetensors
+      - huggingface_hub
+      - anthropic               # only needed if judge.backend == "claude_api"

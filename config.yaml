@@ -1,0 +1,45 @@
+# Causal Consistency of NLA Explanations -- experiment configuration
+# Nothing is hardcoded in src/ -- change values here, not in the pipeline code.
+
+model:
+  qwen_path: "Qwen/Qwen2.5-7B"        # base model whose activations we explain
+  av_checkpoint: "kitft/nla-qwen2.5-7b-L20-av"   # Activation Verbalizer
+  ar_checkpoint: "kitft/nla-qwen2.5-7b-L20-ar"   # Activation Reconstructor
+  layer: 20                          # native NLA training layer (hidden_states[20] convention)
+
+scm:
+  domain: "weather_footwear"         # neutral domain (see dataset/scm_final.py)
+  n_pairs: 60                        # scaled up from pilot (5) now that positive control + template fix are confirmed
+  n_context_records: 8               # records per context block (correlation induction)
+  n_templates: 5
+  seed: 20260826
+
+sampling:
+  k_samples: 8                       # bumped from pilot (3): footwear mention rate is low (~17%), more samples stabilize the qhat distribution per pair
+  k_samples_noise_floor: 10          # AV samples per activation (noise-floor calibration)
+  n_activations_noise_floor: 20
+  av_temperature: 1.0
+  max_new_tokens: 300
+  batch_across_positions: true       # falls back to false on OOM
+
+judge:
+  backend: "keyword_footwear"        # code-only classifier for W; switch to "claude_api"/"qwen_local" for multi-variable claims later
+  n_validation_explanations: 30      # hand-labeled sample for judge agreement check
+  agreement_threshold: 0.90
+
+probe:
+  C_grid: [0.01, 0.1, 1.0]
+  template_split: [[0, 1, 2], [3, 4]]   # train templates, held-out templates (and inverse)
+  presence_threshold:
+    accuracy: 0.85
+    selectivity: 0.30
+
+metrics:
+  bootstrap_n: 10000
+  bootstrap_seed: 0
+  alpha: 0.05
+
+paths:
+  dataset_dir: "dataset/"
+  results_dir: "results/"
+  figures_dir: "results/figures/"
