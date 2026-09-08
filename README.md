@@ -6,6 +6,8 @@ observational correlations -- when describing Qwen2.5-7B activations,
 using a synthetic Structural Causal Model with known ground truth and a
 claim-level total-variation-distance metric.
 
+Link doc: [Causal Consistency of Natural Language Autoencoder Explanations](https://docs.google.com/document/d/1AsDyWWEa_4Fz4Y5Cflqhm6NKxat5LJcm/edit?)usp=sharing&ouid=110662023695804058751&rtpof=true&sd=true
+
 ## The core idea, in one paragraph
 
 The NLA's Activation Verbalizer (AV) is an encoder from activations to
